@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+# streamlit run ctt04.py
 
 # Configuração da página deve ser o primeiro comando Streamlit
 st.set_page_config(layout="wide", page_title="Análise Psicométrica TCT")
@@ -186,8 +187,12 @@ uploaded_file = st.sidebar.file_uploader("Carregar matriz de respostas (.csv)", 
 
 # Seleção da Base de Dados
 if uploaded_file is not None:
-    df = pd.read_csv(uploaded_file, sep=None, engine='python')
+    df = pd.read_csv(uploaded_file, sep=None, engine='python')    
+    df.columns = df.columns.str.strip()
+    primeira_coluna = df.columns[0]
+    df.rename(columns={primeira_coluna: 'ID'}, inplace=True)
     st.sidebar.success("Arquivo carregado com sucesso!")
+    
 else:
     st.info("📊 Exibindo dados de exemplo. Carregue seu próprio arquivo CSV no menu lateral para analisar a sua turma.")
     data = {
@@ -199,6 +204,7 @@ else:
         'i5': [0, 0, 1, 1, 0, 0, 0, 1, 1, 0]
     }
     df = pd.DataFrame(data)
+
 
 Nlin,Lcol =  df.shape 
 
